@@ -14,18 +14,19 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * @Description
  */
 @Controller
+@RequestMapping("/index")
 public class IndexPage {
 
     @Autowired
     private UserServiceImpl userServiceImpl;
 
-    @RequestMapping(value = "/index/login", method = RequestMethod.POST)
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseBody
     public String loginPage(@RequestParam(name = "name") String name, @RequestParam(name = "password") String password) {
         return userServiceImpl.loginIndexPage(name, password);
     }
 
-    @RequestMapping(value = "/index/register", method = RequestMethod.POST)
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
     @ResponseBody
     public String registerUser(@RequestParam(name = "name") String name, @RequestParam(name = "password") String password){
         return userServiceImpl.registerUser(name, password);

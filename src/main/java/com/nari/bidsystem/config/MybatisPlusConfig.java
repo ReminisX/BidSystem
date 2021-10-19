@@ -16,7 +16,7 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @MapperScan("com.myspring.demo.mapper")
-class MybatisPlusConfig {
+public class MybatisPlusConfig {
 
     /**
      * 建议采用如下顺序依次进行设置
