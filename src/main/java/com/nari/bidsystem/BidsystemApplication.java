@@ -5,7 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-@MapperScan(value = "com.nari.bidsystem.dao")
+@MapperScan(value = "com.nari.bidsystem.mapper")
 public class BidsystemApplication {
 
     public static void main(String[] args) {

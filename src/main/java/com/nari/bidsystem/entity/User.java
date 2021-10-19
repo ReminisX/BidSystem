@@ -1,4 +1,4 @@
-package com.nari.bidsystem.dao;
+package com.nari.bidsystem.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -9,26 +9,26 @@ import lombok.Data;
 
 /**
  * 
- * @TableName test
+ * @TableName user
  */
-@TableName(value ="test")
+@TableName(value ="user")
 @Data
-public class Test implements Serializable {
+public class User implements Serializable {
     /**
-     * 
+     * 序列id
      */
     @TableId(type = IdType.AUTO)
     private Integer serial;
 
     /**
-     * 
+     * 用户名
      */
     private String name;
 
     /**
-     * 
+     * 密码
      */
-    private Integer age;
+    private String password;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

@@ -1,20 +1,16 @@
 package com.nari.bidsystem;
 
-import com.nari.bidsystem.service.TestService;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
+@MapperScan(value = "com.nari.bidsystem.mapper")
 class BidsystemApplicationTests {
-
-    @Autowired
-    TestService testService;
 
     @Test
     void contextLoads() {
 
-        
 
     }
 
