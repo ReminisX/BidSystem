@@ -8,6 +8,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.nari.bidsystem.entity.PeopleManage;
 import com.nari.bidsystem.entity.Status;
+import com.nari.bidsystem.entity.User;
+import com.nari.bidsystem.mapper.UserMapper;
 import com.nari.bidsystem.service.PeopleManageService;
 import com.nari.bidsystem.mapper.PeopleManageMapper;
 import org.slf4j.Logger;
@@ -27,6 +29,9 @@ public class PeopleManageServiceImpl extends ServiceImpl<PeopleManageMapper, Peo
 
     @Autowired
     private PeopleManageMapper peopleManageMapper;
+
+    @Autowired
+    private UserMapper userMapper;
 
     private static final Logger logger = LoggerFactory.getLogger(PeopleManageServiceImpl.class);
 
@@ -122,6 +127,28 @@ public class PeopleManageServiceImpl extends ServiceImpl<PeopleManageMapper, Peo
             return "{ \"status\": \"" + Status.success + "\" }";
         }else {
             logger.info("用户<" + peopleManage.getLoginName() + ">更新失败");
+            return "{ status: \"" + Status.failure + "\" }";
+        }
+    }
+
+    /**
+     * 更新用户密码
+     * @param name 用户名
+     * @param password 用户密码
+     * @return 返回处理结果
+     */
+    public String updatePassword(String name, String password) {
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("name", name);
+        User user = new User();
+        user.setName(name);
+        user.setPassword(password);
+        int res = userMapper.update(user, queryWrapper);
+        if (res > 0) {
+            logger.info("用户<" + name + ">密码已更新");
+            return "{ \"status\": \"" + Status.success + "\" }";
+        }else {
+            logger.info("用户<" + name + ">密码更新失败");
             return "{ status: \"" + Status.failure + "\" }";
         }
     }

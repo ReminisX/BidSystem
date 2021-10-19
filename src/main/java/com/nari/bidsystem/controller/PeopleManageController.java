@@ -45,4 +45,11 @@ public class PeopleManageController {
         return res;
     }
 
+    @RequestMapping(value = "/updatePassword", method = RequestMethod.POST)
+    @ResponseBody
+    public String updatePassword(@RequestParam("name") String name, @RequestParam("password") String password) {
+        String res = peopleManageServiceImpl.updatePassword(name, password);
+        return res;
+    }
+
 }
