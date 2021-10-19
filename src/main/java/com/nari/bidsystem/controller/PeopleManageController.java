@@ -1,12 +1,10 @@
 package com.nari.bidsystem.controller;
 
+import com.nari.bidsystem.entity.PeopleManage;
 import com.nari.bidsystem.service.impl.PeopleManageServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @Author ZhangXD
@@ -15,7 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  */
 @Controller
 @RequestMapping("/people")
-public class PeopleManage {
+public class PeopleManageController {
 
     @Autowired
     private PeopleManageServiceImpl peopleManageServiceImpl;
@@ -24,6 +22,13 @@ public class PeopleManage {
     @ResponseBody
     public String getAllPeople(@RequestParam("page") int page, @RequestParam("num") int num) {
         return peopleManageServiceImpl.selectAllByPage(page, num);
+    }
+
+    @RequestMapping(value = "/insert", method = RequestMethod.POST)
+    @ResponseBody
+    public String insertPeople(@RequestBody PeopleManage peopleManage) {
+        String res = peopleManageServiceImpl.insertPeople(peopleManage);
+        return res;
     }
 
 }

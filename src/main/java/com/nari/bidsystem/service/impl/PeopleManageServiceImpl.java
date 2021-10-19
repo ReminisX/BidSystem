@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.nari.bidsystem.entity.PeopleManage;
+import com.nari.bidsystem.entity.Status;
 import com.nari.bidsystem.service.PeopleManageService;
 import com.nari.bidsystem.mapper.PeopleManageMapper;
 import org.slf4j.Logger;
@@ -28,6 +29,10 @@ public class PeopleManageServiceImpl extends ServiceImpl<PeopleManageMapper, Peo
 
     private static final Logger logger = LoggerFactory.getLogger(PeopleManageServiceImpl.class);
 
+    /**
+     * 普通的查询，未分页
+     * @return
+     */
     public String selectAll() {
         QueryWrapper<PeopleManage> queryWrapper = new QueryWrapper<>();
         List<PeopleManage> res = peopleManageMapper.selectList(queryWrapper);
@@ -66,6 +71,17 @@ public class PeopleManageServiceImpl extends ServiceImpl<PeopleManageMapper, Peo
         }
         sb.append("}");
         return sb.toString();
+    }
+
+    public String insertPeople(PeopleManage peopleManage) {
+        int res = peopleManageMapper.insert(peopleManage);
+        if (res > 0) {
+            logger.info("用户<" + peopleManage.getName() + ">已插入");
+            return "{ \"status\": \"" + Status.success + "\" }";
+        }else {
+            logger.info("用户<" + peopleManage.getName() + ">插入失败");
+            return "{ status: \"" + Status.failure + "\" }";
+        }
     }
 
 }
