@@ -17,7 +17,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 人员管理页面服务
@@ -151,6 +156,52 @@ public class PeopleManageServiceImpl extends ServiceImpl<PeopleManageMapper, Peo
             logger.info("用户<" + name + ">密码更新失败");
             return "{ status: \"" + Status.failure + "\" }";
         }
+    }
+
+    /**
+     * 依据反射原理获取对象的所有属性值
+     * @param object
+     * @throws NoSuchMethodException
+     * @throws InvocationTargetException
+     * @throws IllegalAccessException
+     * @return Map 属性名以及属性值
+     */
+    public Map<String, String> searchMethod(Object object) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        Field[] field = object.getClass().getDeclaredFields();
+        Map<String, String> map = new HashMap<>();
+        for (int i = 0; i < field.length; i++) {
+            String fieldName = field[i].getName();
+            String methodStr=fieldName.substring(0,1).toUpperCase()+fieldName.substring(1);
+            Method getterMethod = object.getClass().getMethod("get"+methodStr);
+            String res = (String)getterMethod.invoke(object);
+            map.put(fieldName, res);
+        }
+        return map;
+    }
+
+    /**
+     * 根据提供的不同的属性值进行查询
+     * @param peopleManage 需要查询的对象
+     * @return 返回查询的列表
+     */
+    public String selectByCondition(PeopleManage peopleManage) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+
+        QueryWrapper<PeopleManage> queryWrapper = new QueryWrapper<>();
+        Map<String, String> map = searchMethod(peopleManage);
+        for(Map.Entry<String, String> entry:map.entrySet()){
+            queryWrapper.eq(entry.getKey(), entry.getValue());
+        }
+        List<PeopleManage> res = peopleManageMapper.selectList(queryWrapper);
+        StringBuilder sb = new StringBuilder();
+        sb.append("{");
+        for (int i = 0; i < res.size(); i++) {
+            sb.append("\"" + i + "\":" + JSON.toJSONString(res.get(i)));
+            if (i < res.size()-1) {
+                sb.append(",");
+            }
+        }
+        sb.append("}");
+        return sb.toString();
     }
 
 }

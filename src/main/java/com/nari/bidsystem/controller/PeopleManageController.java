@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.lang.reflect.InvocationTargetException;
+
 /**
  * @Author ZhangXD
  * @Date 2021/10/19 14:23
@@ -49,6 +51,13 @@ public class PeopleManageController {
     @ResponseBody
     public String updatePassword(@RequestParam("name") String name, @RequestParam("password") String password) {
         String res = peopleManageServiceImpl.updatePassword(name, password);
+        return res;
+    }
+
+    @RequestMapping(value = "/select", method = RequestMethod.POST)
+    @ResponseBody
+    public String selectByCondition(@RequestBody PeopleManage peopleManage) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+        String res = peopleManageServiceImpl.selectByCondition(peopleManage);
         return res;
     }
 
