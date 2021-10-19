@@ -31,4 +31,11 @@ public class PeopleManageController {
         return res;
     }
 
+    @RequestMapping(value = "/delete", method = RequestMethod.POST)
+    @ResponseBody
+    public String deletePeople(@RequestParam("loginName") String loginName) {
+        String res = peopleManageServiceImpl.deletePeople(loginName);
+        return res;
+    }
+
 }

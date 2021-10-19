@@ -1,6 +1,7 @@
 package com.nari.bidsystem.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -73,6 +74,11 @@ public class PeopleManageServiceImpl extends ServiceImpl<PeopleManageMapper, Peo
         return sb.toString();
     }
 
+    /**
+     * 插入一个人员信息
+     * @param peopleManage 人员信息对象
+     * @return success or failure
+     */
     public String insertPeople(PeopleManage peopleManage) {
         int res = peopleManageMapper.insert(peopleManage);
         if (res > 0) {
@@ -80,6 +86,24 @@ public class PeopleManageServiceImpl extends ServiceImpl<PeopleManageMapper, Peo
             return "{ \"status\": \"" + Status.success + "\" }";
         }else {
             logger.info("用户<" + peopleManage.getName() + ">插入失败");
+            return "{ status: \"" + Status.failure + "\" }";
+        }
+    }
+
+    /**
+     * 根据loginName删除对象
+     * @param loginName
+     * @return
+     */
+    public String deletePeople(String loginName) {
+        QueryWrapper<PeopleManage> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("login_name", loginName);
+        int res = peopleManageMapper.delete(queryWrapper);
+        if (res > 0) {
+            logger.info("用户<" + loginName + ">已删除");
+            return "{ \"status\": \"" + Status.success + "\" }";
+        }else {
+            logger.info("用户<" + loginName + ">删除失败");
             return "{ status: \"" + Status.failure + "\" }";
         }
     }
