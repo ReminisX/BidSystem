@@ -26,6 +26,7 @@ public class IndexPage {
     }
 
     @RequestMapping(value = "/index/register", method = RequestMethod.POST)
+    @ResponseBody
     public String registerUser(@RequestParam(name = "name") String name, @RequestParam(name = "password") String password){
         return userServiceImpl.registerUser(name, password);
     }

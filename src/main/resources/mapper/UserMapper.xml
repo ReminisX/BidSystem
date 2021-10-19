@@ -5,12 +5,11 @@
 <mapper namespace="com.nari.bidsystem.mapper.UserMapper">
 
     <resultMap id="BaseResultMap" type="com.nari.bidsystem.entity.User">
-            <id property="serial" column="serial" jdbcType="INTEGER"/>
-            <result property="name" column="name" jdbcType="VARCHAR"/>
+            <id property="name" column="name" jdbcType="VARCHAR"/>
             <result property="password" column="password" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="Base_Column_List">
-        serial,name,password
+        name,password
     </sql>
 </mapper>

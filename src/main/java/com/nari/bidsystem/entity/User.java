@@ -15,18 +15,13 @@ import lombok.Data;
 @Data
 public class User implements Serializable {
     /**
-     * 序列id
+     * 
      */
-    @TableId(type = IdType.AUTO)
-    private Integer serial;
-
-    /**
-     * 用户名
-     */
+    @TableId
     private String name;
 
     /**
-     * 密码
+     * 
      */
     private String password;
 
