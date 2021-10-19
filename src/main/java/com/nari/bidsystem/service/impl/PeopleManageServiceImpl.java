@@ -108,6 +108,24 @@ public class PeopleManageServiceImpl extends ServiceImpl<PeopleManageMapper, Peo
         }
     }
 
+    /**
+     * 更新用户信息
+     * @param peopleManage 用户类实体
+     * @return
+     */
+    public String updatePeople(PeopleManage peopleManage) {
+        QueryWrapper<PeopleManage> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("login_name", peopleManage.getLoginName());
+        int res = peopleManageMapper.update(peopleManage, queryWrapper);
+        if (res > 0) {
+            logger.info("用户<" + peopleManage.getLoginName() + ">已更新");
+            return "{ \"status\": \"" + Status.success + "\" }";
+        }else {
+            logger.info("用户<" + peopleManage.getLoginName() + ">更新失败");
+            return "{ status: \"" + Status.failure + "\" }";
+        }
+    }
+
 }
 
 

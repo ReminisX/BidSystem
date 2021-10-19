@@ -38,4 +38,11 @@ public class PeopleManageController {
         return res;
     }
 
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    @ResponseBody
+    public String updatePeople(@RequestBody PeopleManage peopleManage) {
+        String res = peopleManageServiceImpl.updatePeople(peopleManage);
+        return res;
+    }
+
 }
