@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nari.bidsystem.mapper.BiddingMapper">
+
+    <resultMap id="BaseResultMap" type="com.nari.bidsystem.entity.Bidding">
+            <id property="bidId" column="bid_id" jdbcType="VARCHAR"/>
+            <result property="startTime" column="start_time" jdbcType="TIMESTAMP"/>
+            <result property="endTime" column="end_time" jdbcType="TIMESTAMP"/>
+            <result property="itemNo" column="item_no" jdbcType="VARCHAR"/>
+            <result property="specifications" column="specifications" jdbcType="VARCHAR"/>
+            <result property="weight" column="weight" jdbcType="DOUBLE"/>
+            <result property="unit" column="unit" jdbcType="VARCHAR"/>
+            <result property="number" column="number" jdbcType="DOUBLE"/>
+            <result property="technicalAttachments" column="technical_attachments" jdbcType="VARCHAR"/>
+            <result property="technicalRequirement" column="technical_requirement" jdbcType="VARCHAR"/>
+            <result property="bidCompany" column="bid_company" jdbcType="VARCHAR"/>
+            <result property="deliveryDate" column="delivery_date" jdbcType="TIMESTAMP"/>
+            <result property="quoteCount" column="quote_count" jdbcType="INTEGER"/>
+            <result property="duration" column="duration" jdbcType="INTEGER"/>
+            <result property="visible" column="visible" jdbcType="INTEGER"/>
+            <result property="state" column="state" jdbcType="INTEGER"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+            <result property="technicalAttachmentsName" column="technical_attachments_name" jdbcType="VARCHAR"/>
+            <result property="itemName" column="item_name" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        bid_id,start_time,end_time,
+        item_no,specifications,weight,
+        unit,number,technical_attachments,
+        technical_requirement,bid_company,delivery_date,
+        quote_count,duration,visible,
+        state,update_time,technical_attachments_name,
+        item_name
+    </sql>
+</mapper>

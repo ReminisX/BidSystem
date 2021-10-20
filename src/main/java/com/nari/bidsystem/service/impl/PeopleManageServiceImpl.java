@@ -191,14 +191,17 @@ public class PeopleManageServiceImpl extends ServiceImpl<PeopleManageMapper, Peo
 
         QueryWrapper<PeopleManage> queryWrapper = new QueryWrapper<>();
         Map<String, String> map = searchMethod(peopleManage);
+        StringBuilder s = new StringBuilder();
         for(Map.Entry<String, String> entry:map.entrySet()){
             if (entry.getValue() == null || entry.getValue() == "") {
                 continue;
             }else {
-                queryWrapper.eq(entry.getKey(), entry.getValue());
+                s.append(entry.getKey() + "->" +entry.getValue() + ";");
+                queryWrapper.like(entry.getKey(), entry.getValue());
             }
         }
         List<PeopleManage> res = peopleManageMapper.selectList(queryWrapper);
+        logger.info("查询" + s + "成功");
         StringBuilder sb = new StringBuilder();
         sb.append("{");
         for (int i = 0; i < res.size(); i++) {

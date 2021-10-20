@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  */
 @Controller
 @RequestMapping("/index")
-public class IndexPage {
+public class IndexPageController {
 
     @Autowired
     private UserServiceImpl userServiceImpl;
