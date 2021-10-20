@@ -20,9 +20,11 @@ import org.springframework.stereotype.Service;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
 
 /**
  * 人员管理页面服务
@@ -168,13 +170,14 @@ public class PeopleManageServiceImpl extends ServiceImpl<PeopleManageMapper, Peo
      */
     public Map<String, String> searchMethod(Object object) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         Field[] field = object.getClass().getDeclaredFields();
-        Map<String, String> map = new HashMap<>();
-        for (int i = 0; i < field.length; i++) {
+        Map<String, String> map = new HashMap<>(16);
+        for (int i = 0; i < field.length - 1; i++) {
             String fieldName = field[i].getName();
             String methodStr=fieldName.substring(0,1).toUpperCase()+fieldName.substring(1);
             Method getterMethod = object.getClass().getMethod("get"+methodStr);
             String res = (String)getterMethod.invoke(object);
-            map.put(fieldName, res);
+            String name = fieldName.replaceAll("[A-Z]", "_$0").toLowerCase();
+            map.put(name, res);
         }
         return map;
     }
@@ -189,7 +192,11 @@ public class PeopleManageServiceImpl extends ServiceImpl<PeopleManageMapper, Peo
         QueryWrapper<PeopleManage> queryWrapper = new QueryWrapper<>();
         Map<String, String> map = searchMethod(peopleManage);
         for(Map.Entry<String, String> entry:map.entrySet()){
-            queryWrapper.eq(entry.getKey(), entry.getValue());
+            if (entry.getValue() == null || entry.getValue() == "") {
+                continue;
+            }else {
+                queryWrapper.eq(entry.getKey(), entry.getValue());
+            }
         }
         List<PeopleManage> res = peopleManageMapper.selectList(queryWrapper);
         StringBuilder sb = new StringBuilder();
