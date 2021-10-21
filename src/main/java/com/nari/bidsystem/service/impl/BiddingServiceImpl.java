@@ -6,7 +6,6 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.nari.bidsystem.entity.Bidding;
-import com.nari.bidsystem.entity.PeopleManage;
 import com.nari.bidsystem.entity.Status;
 import com.nari.bidsystem.service.BiddingService;
 import com.nari.bidsystem.mapper.BiddingMapper;
@@ -23,7 +22,7 @@ import java.util.List;
  */
 @Service
 public class BiddingServiceImpl extends ServiceImpl<BiddingMapper, Bidding>
-    implements BiddingService{
+        implements BiddingService{
 
     @Autowired
     private BiddingMapper biddingMapper;

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nari.bidsystem.mapper.BidRecordMapper">
+
+    <resultMap id="BaseResultMap" type="com.nari.bidsystem.entity.BidRecord">
+            <id property="uuid" column="uuid" jdbcType="VARCHAR"/>
+            <result property="bidId" column="bid_id" jdbcType="VARCHAR"/>
+            <result property="userId" column="user_id" jdbcType="VARCHAR"/>
+            <result property="quotedPrice" column="quoted_price" jdbcType="DECIMAL"/>
+            <result property="deliveryDays" column="delivery_days" jdbcType="VARCHAR"/>
+            <result property="deliveryDate" column="delivery_date" jdbcType="TIMESTAMP"/>
+            <result property="technicalDeviationDescription" column="technical_deviation_description" jdbcType="VARCHAR"/>
+            <result property="bidCount" column="bid_count" jdbcType="INTEGER"/>
+            <result property="priceRanking" column="price_ranking" jdbcType="INTEGER"/>
+            <result property="qualityRanking" column="quality_ranking" jdbcType="INTEGER"/>
+            <result property="serviceRanking" column="service_ranking" jdbcType="INTEGER"/>
+            <result property="priceScore" column="price_score" jdbcType="DOUBLE"/>
+            <result property="qualityScore" column="quality_score" jdbcType="DOUBLE"/>
+            <result property="serviceScore" column="service_score" jdbcType="DOUBLE"/>
+            <result property="totalScore" column="total_score" jdbcType="DOUBLE"/>
+            <result property="winningTheBid" column="winning_the_bid" jdbcType="INTEGER"/>
+            <result property="isEvaluation" column="is_evaluation" jdbcType="INTEGER"/>
+            <result property="visable" column="visable" jdbcType="INTEGER"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        uuid,bid_id,user_id,
+        quoted_price,delivery_days,delivery_date,
+        technical_deviation_description,bid_count,price_ranking,
+        quality_ranking,service_ranking,price_score,
+        quality_score,service_score,total_score,
+        winning_the_bid,is_evaluation,visable,
+        create_time,update_time
+    </sql>
+</mapper>
