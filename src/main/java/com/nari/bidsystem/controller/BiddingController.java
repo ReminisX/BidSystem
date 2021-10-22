@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @Controller
 @RequestMapping("/bidding")
+@CrossOrigin
 public class BiddingController {
 
     @Autowired
@@ -39,7 +40,7 @@ public class BiddingController {
         return res;
     }
 
-    @RequestMapping(value = "/search", method = RequestMethod.POST)
+    @RequestMapping(value = "/show", method = RequestMethod.POST)
     @ResponseBody
     public String searchBidByPage(int page, int num) {
         String res = biddingServiceImpl.selectAllByPage(page, num);

@@ -15,6 +15,7 @@ import java.lang.reflect.InvocationTargetException;
  */
 @Controller
 @RequestMapping("/people")
+@CrossOrigin
 public class PeopleManageController {
 
     @Autowired
