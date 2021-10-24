@@ -12,6 +12,7 @@ import com.nari.bidsystem.entity.User;
 import com.nari.bidsystem.mapper.UserMapper;
 import com.nari.bidsystem.service.PeopleManageService;
 import com.nari.bidsystem.mapper.PeopleManageMapper;
+import com.nari.bidsystem.util.PageUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,19 +47,10 @@ public class PeopleManageServiceImpl extends ServiceImpl<PeopleManageMapper, Peo
      * 普通的查询，未分页
      * @return
      */
-    public String selectAll() {
+    public List<PeopleManage> selectAll() {
         QueryWrapper<PeopleManage> queryWrapper = new QueryWrapper<>();
         List<PeopleManage> res = peopleManageMapper.selectList(queryWrapper);
-        StringBuilder sb = new StringBuilder();
-        sb.append("{");
-        for (int i = 0; i < res.size(); i++) {
-            sb.append("\"" + i + "\":" + JSON.toJSONString(res.get(i)));
-            if (i < res.size()-1) {
-                sb.append(",");
-            }
-        }
-        sb.append("}");
-        return sb.toString();
+        return res;
     }
 
     /**
@@ -67,23 +59,12 @@ public class PeopleManageServiceImpl extends ServiceImpl<PeopleManageMapper, Peo
      * @param num 需要查询的数量
      * @return JSON格式的查询结果
      */
-    public String selectAllByPage(int page, int num) {
+    public PageUtils<PeopleManage> selectAllByPage(int page, int num) {
         IPage<PeopleManage> peopleManageIPage = new Page<>(page, num);
         peopleManageIPage = peopleManageMapper.selectPage(peopleManageIPage, null);
-        List<PeopleManage> res = peopleManageIPage.getRecords();
+        PageUtils<PeopleManage> pageUtils = new PageUtils<>(peopleManageIPage);
         logger.info("人员管理分页<" + page + "," + num + ">已查询");
-        StringBuilder sb = new StringBuilder();
-        sb.append("{");
-        int index = (page - 1) * num;
-        for (int i = 0; i < res.size(); i++) {
-            index++;
-            sb.append("\"" + index + "\":" + JSON.toJSONString(res.get(i)));
-            if (i < res.size()-1) {
-                sb.append(",");
-            }
-        }
-        sb.append("}");
-        return sb.toString();
+        return pageUtils;
     }
 
     /**
@@ -91,15 +72,14 @@ public class PeopleManageServiceImpl extends ServiceImpl<PeopleManageMapper, Peo
      * @param peopleManage 人员信息对象
      * @return success or failure
      */
-    public String insertPeople(PeopleManage peopleManage) {
+    public int insertPeople(PeopleManage peopleManage) {
         int res = peopleManageMapper.insert(peopleManage);
         if (res > 0) {
-            logger.info("用户<" + peopleManage.getName() + ">已插入");
-            return "{ \"status\": \"" + Status.success + "\" }";
+            logger.info("用户<" + peopleManage.getLoginName() + ">已插入");
         }else {
-            logger.info("用户<" + peopleManage.getName() + ">插入失败");
-            return "{ status: \"" + Status.failure + "\" }";
+            logger.info("用户<" + peopleManage + ">插入失败");
         }
+        return res;
     }
 
     /**
@@ -107,17 +87,11 @@ public class PeopleManageServiceImpl extends ServiceImpl<PeopleManageMapper, Peo
      * @param loginName
      * @return
      */
-    public String deletePeople(String loginName) {
+    public int deletePeople(String loginName) {
         QueryWrapper<PeopleManage> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("login_name", loginName);
         int res = peopleManageMapper.delete(queryWrapper);
-        if (res > 0) {
-            logger.info("用户<" + loginName + ">已删除");
-            return "{ \"status\": \"" + Status.success + "\" }";
-        }else {
-            logger.info("用户<" + loginName + ">删除失败");
-            return "{ status: \"" + Status.failure + "\" }";
-        }
+        return res;
     }
 
     /**
@@ -125,17 +99,16 @@ public class PeopleManageServiceImpl extends ServiceImpl<PeopleManageMapper, Peo
      * @param peopleManage 用户类实体
      * @return
      */
-    public String updatePeople(PeopleManage peopleManage) {
+    public int updatePeople(PeopleManage peopleManage) {
         QueryWrapper<PeopleManage> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("login_name", peopleManage.getLoginName());
         int res = peopleManageMapper.update(peopleManage, queryWrapper);
         if (res > 0) {
             logger.info("用户<" + peopleManage.getLoginName() + ">已更新");
-            return "{ \"status\": \"" + Status.success + "\" }";
         }else {
             logger.info("用户<" + peopleManage.getLoginName() + ">更新失败");
-            return "{ status: \"" + Status.failure + "\" }";
         }
+        return res;
     }
 
     /**
@@ -144,7 +117,7 @@ public class PeopleManageServiceImpl extends ServiceImpl<PeopleManageMapper, Peo
      * @param password 用户密码
      * @return 返回处理结果
      */
-    public String updatePassword(String name, String password) {
+    public int updatePassword(String name, String password) {
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("name", name);
         User user = new User();
@@ -153,11 +126,10 @@ public class PeopleManageServiceImpl extends ServiceImpl<PeopleManageMapper, Peo
         int res = userMapper.update(user, queryWrapper);
         if (res > 0) {
             logger.info("用户<" + name + ">密码已更新");
-            return "{ \"status\": \"" + Status.success + "\" }";
         }else {
             logger.info("用户<" + name + ">密码更新失败");
-            return "{ status: \"" + Status.failure + "\" }";
         }
+        return res;
     }
 
     /**
@@ -187,7 +159,7 @@ public class PeopleManageServiceImpl extends ServiceImpl<PeopleManageMapper, Peo
      * @param peopleManage 需要查询的对象
      * @return 返回查询的列表
      */
-    public String selectByCondition(PeopleManage peopleManage) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+    public List<PeopleManage> selectByCondition(PeopleManage peopleManage) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
 
         QueryWrapper<PeopleManage> queryWrapper = new QueryWrapper<>();
         Map<String, String> map = searchMethod(peopleManage);
@@ -201,17 +173,8 @@ public class PeopleManageServiceImpl extends ServiceImpl<PeopleManageMapper, Peo
             }
         }
         List<PeopleManage> res = peopleManageMapper.selectList(queryWrapper);
-        logger.info("查询" + s + "成功");
-        StringBuilder sb = new StringBuilder();
-        sb.append("{");
-        for (int i = 0; i < res.size(); i++) {
-            sb.append("\"" + i + "\":" + JSON.toJSONString(res.get(i)));
-            if (i < res.size()-1) {
-                sb.append(",");
-            }
-        }
-        sb.append("}");
-        return sb.toString();
+        logger.info("查询<" + s + ">成功" + "，返回<" + res.size() + ">条数据");
+        return res;
     }
 
 }

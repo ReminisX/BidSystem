@@ -5,10 +5,12 @@ package com.nari.bidsystem.entity;
  * @Date 2021/10/19 10:45
  * @Description
  */
-public class Status {
+public class Status<T> {
 
-    public static String success = "Success";
+    private String Code;
 
-    public static String failure = "Failure";
+    private String Message;
+
+    private T Object;
 
 }
