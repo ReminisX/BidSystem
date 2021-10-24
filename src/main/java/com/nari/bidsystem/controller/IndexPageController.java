@@ -1,5 +1,6 @@
 package com.nari.bidsystem.controller;
 
+import com.nari.bidsystem.entity.User;
 import com.nari.bidsystem.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,8 +21,8 @@ public class IndexPageController {
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseBody
-    public String loginPage(@RequestParam(name = "name") String name, @RequestParam(name = "password") String password) {
-        return userServiceImpl.loginIndexPage(name, password);
+    public String loginPage(@RequestBody User user) {
+        return userServiceImpl.loginIndexPage(user.getName(), user.getPassword());
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
