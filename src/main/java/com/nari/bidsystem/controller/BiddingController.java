@@ -46,15 +46,15 @@ public class BiddingController {
         }
     }
 
-    @RequestMapping(value = "/addFile", method = RequestMethod.POST)
-    public ResultUtil addFile(@RequestParam("file") MultipartFile multipartFile){
+    @RequestMapping(value = "/addFile/{id}", method = RequestMethod.POST)
+    public ResultUtil addFile(@RequestParam("file") MultipartFile multipartFile, @PathVariable("id") Integer bidId){
         ResultUtil resultUtil = new ResultUtil();
         if (multipartFile != null){
-            logger.info("接收到file");
+            logger.info(bidId + "接收到file");
         }else{
-            logger.info("未接收到文件");
+            logger.info(bidId + "未接收到文件");
         }
-        int res = biddingServiceImpl.addFile(multipartFile);
+        int res = biddingServiceImpl.addFile(bidId, multipartFile);
         if (res > 0) {
             return resultUtil.success();
         } else {

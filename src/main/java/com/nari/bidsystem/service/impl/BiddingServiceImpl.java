@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -183,9 +184,25 @@ public class BiddingServiceImpl extends ServiceImpl<BiddingMapper, Bidding>
      * @param multipartFile
      * @return
      */
-    public int addFile(MultipartFile multipartFile) {
-
-        return 0;
+    public int addFile(Integer bidId, MultipartFile multipartFile) {
+        String filePath = "E:\\Fork\\Files";
+        if (multipartFile.isEmpty()) {
+            logger.warn(bidId + "=>保存文件失败，文件为空");
+            return 0;
+        }
+        String multipartFileName = multipartFile.getOriginalFilename();
+        File dest = new File(new File(filePath).getAbsolutePath()+ "/" + multipartFileName);
+        if (!dest.getParentFile().exists()) {
+            dest.getParentFile().mkdirs();
+        }
+        try {
+            multipartFile.transferTo(dest);
+            logger.info(bidId + "=>保存文件成功");
+            return 1;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
     }
 }
 
