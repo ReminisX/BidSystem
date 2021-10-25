@@ -20,8 +20,12 @@ import java.util.List;
 @CrossOrigin
 public class IndexPageController {
 
+    private final UserServiceImpl userServiceImpl;
+
     @Autowired
-    private UserServiceImpl userServiceImpl;
+    public IndexPageController(UserServiceImpl userServiceImpl){
+        this.userServiceImpl = userServiceImpl;
+    }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseBody
@@ -29,7 +33,7 @@ public class IndexPageController {
         ResultUtil resultUtil = new ResultUtil();
         List<User> res = userServiceImpl.loginIndexPage(user.getName(), user.getPassword());
         if (res.size() == 1) {
-            return resultUtil.success();
+            return resultUtil.success().addParam("identify" ,res.get(0).getIdentity());
         }else if (res.size() > 1) {
             return resultUtil.addParam("error", "登录异常，有多个账号重复");
         }else{

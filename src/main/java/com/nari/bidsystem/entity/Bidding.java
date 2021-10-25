@@ -19,7 +19,7 @@ public class Bidding implements Serializable {
      * 招标编号
      */
     @TableId
-    private String bidId;
+    private int bidId;
 
     /**
      * 开标时间
@@ -97,7 +97,7 @@ public class Bidding implements Serializable {
     private Integer state;
 
     /**
-     * 是否开始（0未开始，1进行中，2结束）
+     * 更新时间
      */
     private Date updateTime;
 
@@ -110,6 +110,13 @@ public class Bidding implements Serializable {
      * 物料名称
      */
     private String itemName;
+
+    /**
+     * 中标公司
+     */
+    private String winCompany;
+
+    private Double winMoney;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

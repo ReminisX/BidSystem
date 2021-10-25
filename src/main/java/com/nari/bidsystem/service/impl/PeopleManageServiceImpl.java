@@ -35,11 +35,15 @@ import java.util.regex.Matcher;
 public class PeopleManageServiceImpl extends ServiceImpl<PeopleManageMapper, PeopleManage>
     implements PeopleManageService{
 
-    @Autowired
-    private PeopleManageMapper peopleManageMapper;
+    private final PeopleManageMapper peopleManageMapper;
+
+    private final UserMapper userMapper;
 
     @Autowired
-    private UserMapper userMapper;
+    public PeopleManageServiceImpl(UserMapper userMapper, PeopleManageMapper peopleManageMapper){
+        this.peopleManageMapper = peopleManageMapper;
+        this.userMapper = userMapper;
+    }
 
     private static final Logger logger = LoggerFactory.getLogger(PeopleManageServiceImpl.class);
 
@@ -91,6 +95,11 @@ public class PeopleManageServiceImpl extends ServiceImpl<PeopleManageMapper, Peo
         QueryWrapper<PeopleManage> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("login_name", loginName);
         int res = peopleManageMapper.delete(queryWrapper);
+        if (res > 0) {
+            logger.info("删除" + loginName + "成功");
+        }else{
+            logger.info("删除" + loginName + "失败");
+        }
         return res;
     }
 
@@ -160,7 +169,6 @@ public class PeopleManageServiceImpl extends ServiceImpl<PeopleManageMapper, Peo
      * @return 返回查询的列表
      */
     public List<PeopleManage> selectByCondition(PeopleManage peopleManage) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
-
         QueryWrapper<PeopleManage> queryWrapper = new QueryWrapper<>();
         Map<String, String> map = searchMethod(peopleManage);
         StringBuilder s = new StringBuilder();

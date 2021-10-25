@@ -15,15 +15,20 @@ import lombok.Data;
 @Data
 public class User implements Serializable {
     /**
-     * 
+     * 登录名
      */
     @TableId
     private String name;
 
     /**
-     * 
+     * 登录密码
      */
     private String password;
+
+    /**
+     * 登录身份，0内部，1供应商
+     */
+    private int identity;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

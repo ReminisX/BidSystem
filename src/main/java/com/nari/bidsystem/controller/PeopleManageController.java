@@ -23,8 +23,12 @@ import java.util.List;
 @CrossOrigin
 public class PeopleManageController {
 
+    private final PeopleManageServiceImpl peopleManageServiceImpl;
+
     @Autowired
-    private PeopleManageServiceImpl peopleManageServiceImpl;
+    public PeopleManageController(PeopleManageServiceImpl peopleManageServiceImpl){
+        this.peopleManageServiceImpl = peopleManageServiceImpl;
+    }
 
     @RequestMapping(value = "/all", method = RequestMethod.GET)
     @ResponseBody
