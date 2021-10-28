@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.util.Date;
 import lombok.Data;
+import org.apache.ibatis.annotations.Options;
 
 /**
  * 
@@ -18,8 +19,8 @@ public class Bidding implements Serializable {
     /**
      * 招标编号
      */
-    @TableId
-    private int bidId;
+    @TableId(type = IdType.AUTO)
+    private Integer bidId;
 
     /**
      * 开标时间
@@ -94,7 +95,7 @@ public class Bidding implements Serializable {
     /**
      * 是否开始（0未开始，1进行中，2结束）
      */
-    private Integer state;
+    private String state;
 
     /**
      * 更新时间
@@ -117,6 +118,21 @@ public class Bidding implements Serializable {
     private String winCompany;
 
     private Double winMoney;
+
+    @TableField(exist = false)
+    private Integer page;
+
+    @TableField(exist = false)
+    private Integer num;
+
+    @TableField(exist = false)
+    private String updateTimeString;
+
+    @TableField(exist = false)
+    private String startTimeString;
+
+    @TableField(exist = false)
+    private String endTimeString;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import lombok.Data;
+import org.springframework.data.annotation.Transient;
 
 /**
  * 
@@ -49,6 +50,16 @@ public class PeopleManage implements Serializable {
      * 
      */
     private String phone;
+
+    private String password;
+
+    private Integer identity;
+
+    @TableField(exist = false)
+    private Integer page;
+
+    @TableField(exist = false)
+    private Integer num;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

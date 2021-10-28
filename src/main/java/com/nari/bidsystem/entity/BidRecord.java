@@ -118,5 +118,11 @@ public class BidRecord implements Serializable {
     private Date updateTime;
 
     @TableField(exist = false)
+    private Integer page;
+
+    @TableField(exist = false)
+    private Integer num;
+
+    @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 }

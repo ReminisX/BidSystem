@@ -21,10 +21,7 @@ import org.springframework.stereotype.Service;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 
 /**
@@ -149,9 +146,9 @@ public class PeopleManageServiceImpl extends ServiceImpl<PeopleManageMapper, Peo
      * @throws IllegalAccessException
      * @return Map 属性名以及属性值
      */
-    public Map<String, String> searchMethod(Object object) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    public Map<String, Object> searchMethod(Object object) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         Field[] field = object.getClass().getDeclaredFields();
-        Map<String, String> map = new HashMap<>(16);
+        Map<String, Object> map = new HashMap<>(16);
         for (int i = 0; i < field.length - 1; i++) {
             String fieldName = field[i].getName();
             String methodStr=fieldName.substring(0,1).toUpperCase()+fieldName.substring(1);
@@ -170,9 +167,9 @@ public class PeopleManageServiceImpl extends ServiceImpl<PeopleManageMapper, Peo
      */
     public List<PeopleManage> selectByCondition(PeopleManage peopleManage) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
         QueryWrapper<PeopleManage> queryWrapper = new QueryWrapper<>();
-        Map<String, String> map = searchMethod(peopleManage);
+        Map<String, Object> map = searchMethod(peopleManage);
         StringBuilder s = new StringBuilder();
-        for(Map.Entry<String, String> entry:map.entrySet()){
+        for(Map.Entry<String, Object> entry:map.entrySet()){
             if (entry.getValue() == null || entry.getValue() == "") {
                 continue;
             }else {
@@ -185,6 +182,38 @@ public class PeopleManageServiceImpl extends ServiceImpl<PeopleManageMapper, Peo
         return res;
     }
 
+    /**
+     * 选择一个人员信息
+     * @param peopleManage
+     * @return
+     */
+    public PeopleManage selectOne(PeopleManage peopleManage) {
+        QueryWrapper<PeopleManage> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("login_name", peopleManage.getLoginName());
+        PeopleManage peopleManage1 = peopleManageMapper.selectOne(queryWrapper);
+        if (peopleManage1 != null){
+            logger.info("查询<" + peopleManage.getLoginName() + ">成功");
+        }else{
+            logger.warn("查询<" + peopleManage.getLoginName() + ">失败");
+        }
+        return peopleManage1;
+    }
+
+    public Set<String> selectIdentity(PeopleManage peopleManage) {
+        QueryWrapper<PeopleManage> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("identity", peopleManage.getIdentity());
+        List<PeopleManage> res = peopleManageMapper.selectList(queryWrapper);
+        Set<String> set = new HashSet<>();
+        for (PeopleManage p : res){
+            set.add(p.getCompanyName());
+        }
+        if (res.size() > 0) {
+            logger.info("公司列表查询成功，返回<" + res.size() + ">条数据");
+        }else{
+            logger.warn("公司列表查询失败");
+        }
+        return set;
+    }
 }
 
 

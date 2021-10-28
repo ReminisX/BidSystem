@@ -16,4 +16,6 @@ public class PageElement {
 
     private String loginName;
 
+    private String path;
+
 }
