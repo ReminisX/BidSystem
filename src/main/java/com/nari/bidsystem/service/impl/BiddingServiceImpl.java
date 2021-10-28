@@ -79,6 +79,19 @@ public class BiddingServiceImpl extends ServiceImpl<BiddingMapper, Bidding>
         }
         bidding.setUpdateTime(new Date());
         bidding.setEndTime(bidding.getDeliveryDate() == null ? new Date() : bidding.getDeliveryDate());
+
+        Date date = new Date();
+        if (bidding.getStartTime().compareTo(date) > 0){
+            bidding.setState("未开始");
+            bidding.setVisible(0);
+        }else if (bidding.getEndTime().compareTo(date) < 0){
+            bidding.setState("已结束");
+            bidding.setVisible(0);
+        }else{
+            bidding.setState("进行中");
+            bidding.setVisible(1);
+        }
+
         Map<String, Object> map = searchMethod(bidding);
         StringBuilder s = new StringBuilder();
         for(Map.Entry<String, Object> entry:map.entrySet()){

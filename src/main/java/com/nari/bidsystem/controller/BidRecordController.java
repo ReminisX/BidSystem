@@ -3,6 +3,7 @@ package com.nari.bidsystem.controller;
 import com.nari.bidsystem.entity.BidRecord;
 import com.nari.bidsystem.entity.Bidding;
 import com.nari.bidsystem.entity.PageElement;
+import com.nari.bidsystem.entity.PeopleManage;
 import com.nari.bidsystem.service.impl.BidRecordServiceImpl;
 import com.nari.bidsystem.util.PageUtils;
 import com.nari.bidsystem.util.ResultUtil;
@@ -137,5 +138,16 @@ public class BidRecordController {
         ResultUtil resultUtil = new ResultUtil();
         Boolean b = bidRecordServiceImpl.hasBid(bidRecord);
         return resultUtil.addParam("has", b).success();
+    }
+
+    @PostMapping("/getCanBid")
+    public ResultUtil getCanBid(@RequestBody PeopleManage peopleManage){
+        ResultUtil resultUtil = new ResultUtil();
+        PageUtils<Bidding> pageUtils = bidRecordServiceImpl.getCanBid(peopleManage);
+        if (resultUtil != null){
+            return resultUtil.addData(pageUtils).success();
+        }else{
+            return resultUtil.failure();
+        }
     }
 }

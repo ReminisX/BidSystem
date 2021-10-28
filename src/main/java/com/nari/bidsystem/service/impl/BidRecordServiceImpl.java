@@ -212,6 +212,8 @@ public class BidRecordServiceImpl extends ServiceImpl<BidRecordMapper, BidRecord
         bidding.setWinMoney(winMoney.doubleValue());
         int res = biddingMapper.update(bidding, biddingQueryWrapper);
         logger.info("评标完成");
+        bidding.setState("已结束");
+        int r = biddingMapper.update(bidding, biddingQueryWrapper);
         return bidding;
     }
 
@@ -220,6 +222,22 @@ public class BidRecordServiceImpl extends ServiceImpl<BidRecordMapper, BidRecord
         queryWrapper.eq("bid_id", bidRecord.getBidId()).eq("user_id", bidRecord.getUserId());
         BidRecord bidRecord1 = bidRecordMapper.selectOne(queryWrapper);
         return bidRecord1 != null;
+    }
+
+    public PageUtils<Bidding> getCanBid(PeopleManage peopleManage) {
+        String companyName = "";
+        if (peopleManage.getCompanyName() != null){
+            companyName = peopleManage.getCompanyName();
+        }else{
+            QueryWrapper<PeopleManage> peopleManageQueryWrapper = new QueryWrapper<>();
+            peopleManageQueryWrapper.eq("login_name", peopleManage.getLoginName());
+            PeopleManage peopleManage1 = peopleManageMapper.selectOne(peopleManageQueryWrapper);
+            companyName = peopleManage1.getCompanyName();
+        }
+        QueryWrapper<Bidding> queryWrapper = new QueryWrapper<>();
+        queryWrapper.like("bid_company", companyName);
+        List<Bidding> res = biddingMapper.selectList(queryWrapper);
+        return new PageUtils<Bidding>(res, res.size(), 0, 0);
     }
 }
 
